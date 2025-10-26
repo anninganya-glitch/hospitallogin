@@ -353,87 +353,87 @@
             南城市第一人民医院 © 2012 版权所有 | 技术支持: 信息科
         </div>
         
-        <div class="bg-note">背景图片路径: ./hospital-background.png</div>
+        <div class="bg-note">背景图片路径</div>
     </div>
 
     <script>
-        // 页面元素
-        const campusSelection = document.getElementById('campus-selection');
-        const loginPage = document.getElementById('login-page');
-        const campusOptions = document.querySelectorAll('.campus-option');
-        const enterBtn = document.getElementById('enter-btn');
-        const backBtn = document.getElementById('back-btn');
-        const selectedCampus = document.getElementById('selected-campus');
-        const loginForm = document.getElementById('login-form');
-        
-        let currentCampus = '';
-        
-        // 院区选择逻辑
-        campusOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                campusOptions.forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-                currentCampus = this.getAttribute('data-campus');
-            });
+    // 页面元素
+    const campusSelection = document.getElementById('campus-selection');
+    const loginPage = document.getElementById('login-page');
+    const campusOptions = document.querySelectorAll('.campus-option');
+    const enterBtn = document.getElementById('enter-btn');
+    const backBtn = document.getElementById('back-btn');
+    const selectedCampus = document.getElementById('selected-campus');
+    const loginForm = document.getElementById('login-form');
+    
+    let currentCampus = '';
+    
+    // 院区选择逻辑
+    campusOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            campusOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            currentCampus = this.getAttribute('data-campus');
         });
+    });
+    
+    // 进入系统按钮点击事件
+    enterBtn.addEventListener('click', function() {
+        if (!currentCampus) {
+            alert('请先选择院区！');
+            return;
+        }
         
-        // 进入系统按钮点击事件
-        enterBtn.addEventListener('click', function() {
-            if (!currentCampus) {
-                alert('请先选择院区！');
-                return;
-            }
-            
-            // 显示登录页面，隐藏院区选择页面
-            campusSelection.style.display = 'none';
-            loginPage.style.display = 'block';
-            
-            // 显示所选院区
-            const campusNames = {
-                'jiangshan': '江山院区',
-                'jingzhou': '靖州院区',
-                'nanshan': '南山院区'
-            };
-            selectedCampus.textContent = `当前院区：${campusNames[currentCampus]}`;
-        });
+        // 显示登录页面，隐藏院区选择页面
+        campusSelection.style.display = 'none';
+        loginPage.style.display = 'block';
         
-        // 返回按钮点击事件
-        backBtn.addEventListener('click', function() {
-            loginPage.style.display = 'none';
-            campusSelection.style.display = 'block';
-        });
+        // 显示所选院区
+        const campusNames = {
+            'jiangshan': '江山院区',
+            'jingzhou': '靖州院区',
+            'nanshan': '南山院区'
+        };
+        selectedCampus.textContent = `当前院区：${campusNames[currentCampus]}`;
+    });
+    
+    // 返回按钮点击事件
+    backBtn.addEventListener('click', function() {
+        loginPage.style.display = 'none';
+        campusSelection.style.display = 'block';
+    });
+    
+    // 登录表单提交事件
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        // 登录表单提交事件
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        const patientName = document.getElementById('patient-name').value;
+        const department = document.getElementById('department').value;
+        const bedNumber = document.getElementById('bed-number').value;
+        
+        // 验证逻辑
+        if (currentCampus === 'jiangshan' && 
+            patientName === '沈文君' && 
+            department === '骨伤科' && 
+            bedNumber === '203') {
             
-            const patientName = document.getElementById('patient-name').value;
-            const department = document.getElementById('department').value;
-            const bedNumber = document.getElementById('bed-number').value;
+            // 登录成功
+            alert('登录成功！正在跳转至病历系统...');
+            // 跳转到指定的病历系统页面
+            window.location.href = 'https://anninganya-glitch.github.io/hospitalhistory/';
             
-            // 验证逻辑
-            if (currentCampus === 'jiangshan' && 
-                patientName === '沈文君' && 
-                department === '骨伤科' && 
-                bedNumber === '203') {
-                
-                // 登录成功
-                alert('登录成功！正在跳转至病历系统...');
-                // 在实际应用中，这里应该跳转到病历系统页面
-                // window.location.href = 'patient-record.html';
-                
+        } else {
+            // 登录失败
+            if (currentCampus !== 'jiangshan') {
+                alert('未查询到相应信息，请检查信息是否输入正确，或是否院区选择错误。');
             } else {
-                // 登录失败
-                if (currentCampus !== 'jiangshan') {
-                    alert('未查询到相应信息，请检查信息是否输入正确，或是否院区选择错误。');
-                } else {
-                    alert('未查询到相应信息，请检查就诊人名称、住院科室和床号是否正确。');
-                }
+                alert('未查询到相应信息，请检查就诊人名称、住院科室和床号是否正确。');
             }
-        });
-        
-        // 默认选择江山院区
-        document.querySelector('.campus-option[data-campus="jiangshan"]').click();
-    </script>
+        }
+    });
+    
+    // 默认选择江山院区
+    document.querySelector('.campus-option[data-campus="jiangshan"]').click();
+</script>
 </body>
 </html>
